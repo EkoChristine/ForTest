@@ -27,8 +27,8 @@ identify(me);  //KYLE
 ```
 > 使用模式越複雜，越能看出以明確參數(explicit parameter)的方式四處傳遞情境(context)，比傳遞this情境還要來的雜亂
 
-***
 ### 容易混淆之處
+#### 誤解1. 認為this參考到函式本身(the function itself)
 ```javascript
 function foo(num) {
   console.log( "foo:" + num );
@@ -109,3 +109,24 @@ for (i=0; i<10; i++){
 
 console.log(foo.count); //4
 ```
+
+#### 誤解2 this以某種方式參考了函式的範疇(function's scope)
+```javascript
+function foo() {
+  var a = 2;
+  this.bar();  
+  //誤1. 經由this.bar()來參考bar()函式  ※調用(invoke) bar()最自然的方式為省略this. 
+  //誤2. 使用this在foo()與bar()的語彙範疇(lexical reference)之間建立一座橋梁，讓bar()取用foo()內的變數a
+}
+
+function bar() {
+  console.log( this.a );
+}
+
+foo(); //undefined
+```
+
+### this是什麼?
+1. 執行時期(被調用時)的繫結(runtime binding)
+2. this的binding與function在何處宣告無關，取決於"函式被呼叫的方式"
+3. this參考的是什麼，取決於該function被呼叫的呼叫地點(call-site)
